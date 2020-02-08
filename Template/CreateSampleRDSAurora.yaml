@@ -16,7 +16,7 @@ Parameters:
   DBParameterGroupFamily: 
     Type: String
     Description: "Please input DBParameterGroupFamily."
-    Default: "aurora5.6"
+    Default: "aurora-mysql5.7"
     AllowedPattern: "[-_. a-zA-Z0-9]*"
     ConstraintDescription: ""
   RDSAuroraClusterName: 
@@ -40,9 +40,7 @@ Parameters:
   RDSAuroraPassword: 
     Type: String
     Description: "Please input DB password in RDS Aurora."
-    Default: admin123
-    AllowedPattern: "[-a-zA-Z0-9]*"
-    ConstraintDescription: ""
+    Default: "your password"
   VPC: 
     Type: String
     Description: "Please input VPC Id."
@@ -64,7 +62,7 @@ Parameters:
   RDSAuroraEngineVersion: 
     Type: String
     Description: "Please input Engine Version in RDS Aurora MySQL."
-    Default: "5.6.10a"
+    Default: "5.7"
     AllowedPattern: "[-_. a-zA-Z0-9]*"
     ConstraintDescription: ""
   RDSAuroraInstanceClass: 
@@ -211,12 +209,12 @@ Resources:
     Type: "AWS::RDS::DBClusterParameterGroup"
     Properties: 
       Parameters: 
-        character_set_client: utf8
-        character_set_connection: utf8
-        character_set_database: utf8
-        character_set_filesystem: utf8
-        character_set_results: utf8
-        character_set_server: utf8
+        character_set_client: utf8mb4
+        character_set_connection: utf8mb4
+        character_set_database: utf8mb4
+        character_set_filesystem: utf8mb4
+        character_set_results: utf8mb4
+        character_set_server: utf8mb4
         binlog_format: "OFF"
         "master-info-repository": "TABLE"
         server_audit_logging: 0
@@ -270,7 +268,7 @@ Resources:
         Ref: RDSDBClusterParameterGroup
       DBSubnetGroupName: 
         Ref: RDSMultiAZSubnetGroup
-      Engine: aurora
+      Engine: aurora-mysql
       EngineVersion: 
         Ref: RDSAuroraEngineVersion
       StorageEncrypted: true
@@ -281,6 +279,11 @@ Resources:
       Port: 3306
       PreferredMaintenanceWindow: 
         Ref: MaintenanceTime
+      EnableCloudwatchLogsExports:
+        - general
+        - error
+        - slowquery
+        - audit
       VpcSecurityGroupIds: 
         - Ref: RDSSecurityGroup
       Tags: 
@@ -304,7 +307,7 @@ Resources:
     Type: "AWS::RDS::DBInstance"
     DependsOn: RDSDBCluster
     Properties: 
-      Engine: aurora
+      Engine: aurora-mysql
       EngineVersion: 
         Ref: RDSAuroraEngineVersion
       AllowMajorVersionUpgrade: false
