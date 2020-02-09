@@ -22,13 +22,13 @@ Parameters:
   RDSAuroraClusterName: 
     Type: String
     Description: "Please input Cluster Id in RDS Aurora."
-    Default: "my-cluster1"
+    Default: "RDSAurora-Cluster"
     AllowedPattern: "[-_ a-zA-Z0-9]*"
     ConstraintDescription: ""
   RDSAuroraDBname: 
     Type: String
     Description: "Please input DB name in RDS Aurora."
-    Default: SampleDB
+    Default: saport
     AllowedPattern: "[-a-zA-Z0-9]*"
     ConstraintDescription: ""
   RDSAuroraUser: 
